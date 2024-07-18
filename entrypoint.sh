@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-# Initialize the database
+echo "Initializing the Airflow database..."
 airflow db init
 
-# Create an admin user
+echo "Creating admin user..."
 airflow users create \
     --username admin \
-    --password admin \
-    --firstname admin \
-    --lastname admin \
+    --firstname FIRST_NAME \
+    --lastname LAST_NAME \
     --role Admin \
-    --email admin@example.com
+    --email admin@example.com \
+    --password admin
 
-# Start the web server
-exec "$@"
+echo "Starting $1..."
+exec airflow "$1"
