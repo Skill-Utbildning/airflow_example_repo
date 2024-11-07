@@ -1,4 +1,4 @@
-version: '3'
+
 services:
   postgres:
     image: postgres:13
@@ -20,7 +20,7 @@ services:
       - ./logs:/opt/airflow/logs
     ports:
       - "8080:8080"
-    entrypoint: /entrypoint.sh
+    entrypoint: /opt/airflow/entrypoint.sh
     command: webserver
 
   scheduler:
@@ -34,5 +34,5 @@ services:
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
-    entrypoint: /entrypoint.sh
+    entrypoint: /opt/airflow/entrypoint.sh
     command: scheduler

@@ -36,7 +36,7 @@ airflow_example_repo/
 2. **Build the Docker Images**
 
    ```bash
-   chmod +x entrypoint.sh
+   chmod +x entrypoint.sh //only necessary if on *nix machine
    docker-compose build
    ```
 

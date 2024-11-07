@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 echo "Initializing the Airflow database..."
 airflow db init
 

@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.sensors.filesystem import FileSensor
 from airflow.utils.dates import days_ago
 from scripts.task_functions import extract_data, transform_data, load_data, send_success_email, send_failure_email
 

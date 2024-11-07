@@ -5,10 +5,10 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY dags/ /opt/airflow/dags/
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /opt/airflow/entrypoint.sh
 
 USER root
-RUN chmod +x /entrypoint.sh
+RUN ["chmod", "+x", "/opt/airflow/entrypoint.sh"]
 USER airflow
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/opt/airflow/entrypoint.sh"]
