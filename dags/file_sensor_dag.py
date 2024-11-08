@@ -3,8 +3,10 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.sensors.filesystem import FileSensor
 from airflow.utils.dates import days_ago
+
 # Import your custom functions for reading file and writing to Oracle database
-from scripts import read_file_contents, write_to_oracle
+from scripts.read_file_contents import read_file_contents
+from scripts.write_to_oracle import write_to_oracle
 
 CURR_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -15,6 +17,7 @@ default_args = {
     'depends_on_past': False,
     'retries': 1,
     }
+
 # Create the DAG instance
 with DAG(
     'file_to_oracle_dag',
@@ -32,13 +35,13 @@ with DAG(
   read_file_task = PythonOperator(
     task_id='read_file_task',
     python_callable=read_file_contents, # Your custom Python function
-    op_args=['{{ task_instance.xcom_pull(task_ids="file_sensor_task") }}'], # Pass the file path
+    op_kwargs={'file_path' : os.path.join(CURR_DIR_PATH, 'ingest_source','*.csv')}
   )
   # Define the PythonOperator task to write to Oracle database
   write_to_oracle_task = PythonOperator(
     task_id='write_to_oracle_task',
     python_callable=write_to_oracle, # Your custom Python function
-    op_args=['{{ task_instance.xcom_pull(task_ids="read_file_task") }}'], # Pass the file contents
+    op_args=['{{ task_instance(task_ids="read_file_task") }}'], # Pass the file contents
   )
   # Define the task dependencies
   file_sensor_task >> read_file_task >> write_to_oracle_task

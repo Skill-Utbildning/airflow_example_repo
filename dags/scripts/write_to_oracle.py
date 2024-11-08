@@ -2,7 +2,10 @@ import oracledb
 import json
 from datetime import datetime
 
-def write_to_oracle(file_path):
+def write_to_oracle(ti):
+
+    file_path=ti.xcom_pull(task_ids='read_file_task')
+
     # Oracle connection details
     oracle_username = 'your_username'
     oracle_password = 'your_password'
